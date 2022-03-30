@@ -1,5 +1,44 @@
 # 0-bootstrap
 
+## Marc Notes
+
+Authenticate first with:
+
+- `gcloud auth login` - using `terraform-example-foundation@iaggcpdemo.info`
+
+This is a member of the following group (with the associated permissions) set at the root level (i.e. `iaggcpdemo.com`)
+
+- `gcp-terraform-admins@iaggcpdemo.info`
+  - `Folder Creator`
+  - `Folder Viewer`
+  - `Organization Administrator`
+  - `Owner`
+  - `Project Creator`
+
+To get the validator working, initially check the releases:
+
+```shell
+gsutil ls -r "gs://terraform-validator/releases/v*"
+```
+
+We want to install v4, so run the following
+
+```shell
+cd ~/programs/
+#gsutil cp gs://terraform-validator/releases/v0.9.2/terraform-validator_darwin_amd64-0.9.2.tar.gz .
+#tar -xzvf terraform-validator_darwin_amd64-0.9.2.tar.gz
+gsutil cp gs://terraform-validator/releases/v0.4.0/terraform-validator-darwin-amd64 .
+cp terraform-validator-darwin-amd64 terraform-validator
+chmod 755 terraform-validator
+```
+
+Then add to the path. I.e. 
+
+```shell
+# Add the terraform validator to the path
+export PATH="/Users/s703769/programs:$PATH"
+```
+
 This repo is part of a multi-part guide that shows how to configure and deploy
 the example.com reference architecture described in
 [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf)
@@ -150,12 +189,16 @@ Storage bucket to the `backend.tf` files. You can update all of these files with
 the following steps:
 
 1. Go to the `terraform-example-foundation` directory.
-1. Run the following command:
+2. Run the following command:
    ```
    for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/GCS_BUCKET_NAME/' $i; done
    ```
    where `GCS_BUCKET_NAME` is the name of your bucket from the steps you ran
    earlier.
+   I.e. On a Mac, with the bucket `bkt-b-tfstate-73c4`, the command is:
+   ```shell
+   for i in `find . -name 'backend.tf'`; do sed -i '' 's/UPDATE_ME/bkt-b-tfstate-73c4/' $i; done
+   ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
